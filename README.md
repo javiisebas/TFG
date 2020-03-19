@@ -1,5 +1,7 @@
 ## TFG
-This files contain the code of my thesis in two verson.
+This files contain the code of my thesis in three version.
 >HTML (web page).
 
->Jupyter sheet.
+>Jupyter sheet (.ipynb).
+
+>Python (.py).
