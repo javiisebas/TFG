@@ -1,13 +1,24 @@
 
-To obtain the printed parameters in each shell, run:
-    Main.py
-    
 Graphs:
+To obtain a compound graph with all the parameters, run:
+    Compound_Main.py
+ 
+To obtain a separared graph with all the parameters, run:
+    Separated_Main-py
+    
 To obtain the Temperature graph, run:
     Plot-Temperature.py
  
-To obtain the Mass-Luminosity graph, run:
-    Plot-Mass-Luminosity.py
+To obtain the Radius-Luminosity graph, run:
+    Plot-Radius-Luminosity.py
     
-To obtain the both graphs, run:
+To obtain both graphs, run:
     Plot-Compound.py
+    
+   
+All of them studies of the parameters that minimaze the relative error.
+To get the printed values you have to run any of the two scrips that
+have been mencionated at the begining.
+
+For simplicity, all the scripts have been ejecutaded and the images 
+of the graphs are in the Images directory.
