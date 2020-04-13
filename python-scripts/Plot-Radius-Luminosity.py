@@ -28,7 +28,7 @@ ax.set_xlabel("Luminosity", fontsize = 13) # X labels
 ax.set_ylabel("Radius", fontsize = 13)     # Y labels
 
 # Box of text
-ax.text((length-1)/2, 0.70*(length-1), "\nRelative Error = {:.4f} %\n Luminosity = {:.4f}·10^33 erg s^−1 \nRadius = {:.4f}·10^10 cm\n"
+ax.text((length-1)/2, 0.80*(length-1), "\nRelative Error = {:.4f} %\n Luminosity = {:.4f}·10^33 erg s^−1 \nRadius = {:.4f}·10^10 cm\n"
          .format(100*error_matrix[pos_min[0], pos_min[1]][0], L_prueba2[pos_min[1][0]], R_prueba2[pos_min[0][0]]), size = 11,
          ha = "center", va = "center",bbox = dict(boxstyle="round",
          ec = (1., 0.5, 0.5), fc = (1., 0.8, 0.8)))

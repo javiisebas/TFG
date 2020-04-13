@@ -42,7 +42,7 @@ def frontierStudy(part):
         R_int = [11.2, 11.3]     # Radius interval boundaries
         L_int = [42, 43]         # Luminosity interval boundaries
 
-        length = 40 # Number of divisions of the interval
+        length = 20 # Number of divisions of the interval
 
         R_prueba2 = linspace(R_int[0], R_int[1], length) # Radius interval
         L_prueba2 = linspace(L_int[0], L_int[1], length) # Luminosity interval
@@ -56,7 +56,7 @@ def frontierStudy(part):
         for i in range(length): # Rows
             if (100*(i+1)/length) % 20 == 0: # Progress Percentaje
                 print("   {}%".format(round(100*(i+1)/length),0))
-            for j in range(length): # Columns 
+            for j in range(length): # Columns
                 error_matrix[i, j] = minRelError(Tc, R_prueba2[i], L_prueba2[j], False) # We introduce the values in the matrix
 
         # Finally we can look for the position of the minimum relative error in the matriz
@@ -73,10 +73,11 @@ def frontierStudy(part):
         print("   L:    {:.4f}·10^33 erg s−1".format(L))
         print("   E:    {:.5f} %\n".format(100*error_matrix[pos_min[0], pos_min[1]][0]))
 
-
+        #minRelError(Tc, R, L, True)
         # Depending if we have gone up to the second part or just the first one, we will return different things
         return Tc, T_prueba1, error_list, pos_min1, L_prueba2, R_prueba2, error_matrix, pos_min, R_int, L_int, R, L
 
     else: # Part one of the calculations
 
         return Tc, T_prueba1, error_list, pos_min1
+

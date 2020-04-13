@@ -2,6 +2,7 @@
 from Defined_Functions import * # We import all the functions that we have defined
 import warnings                 # As there some problems with the zero divide, we do not want to get any warning message
 from Print_Helper import *      # We import a function to make our printed values more styles
+from copy import copy
 
 warnings.filterwarnings("ignore")
 
@@ -437,12 +438,12 @@ def ParametersConvFun(Tc, RTot, LTot, ParametersRad, control):
      in the radioactive envelope
     '''
 
-    global RTot_initial, LTot_initial, layers
+    global layers
 
 
     R_rad_i = ParametersRad[0]  # Radius list in the radioactive part
     n_rad_i = ParametersRad[5]  # List of n-parameters
-    K = ParametersRad[  6]      # Polytrope model constant
+    K = ParametersRad[6]      # Polytrope model constant
 
     # We can calculate the values ​​of the physical parameters in the transition between the radiative and convective regions of the star
     # We will use them to study the relative error of all the model, with tha values obtained integrating from the center
@@ -589,17 +590,19 @@ def minRelError(Tc, RTot, LTot, control):
 
     # If the total radius or the total luminosity are different than the initial values we have to calculate the parameters again
     # as the ones that we have calculated right before this function, are with the initial values of radius and luminosity
+    ParametersRad_copy = copy(ParametersRad)
     if RTot != RTot_initial or LTot != LTot_initial:
-        ParametersRad = ParametersRadFun(RTot, LTot, control) # New frontier values
+        ParametersRad_copy = ParametersRadFun(RTot, LTot, control) # New frontier values
 
-    ParametersConv = ParametersConvFun(Tc, RTot, LTot, ParametersRad, control)
 
-    R_rad_i = ParametersRad[0]    # Radius in the radioactive envelope
-    P_rad_i = ParametersRad[1]    # Pressure in the radioactive envelope
-    T_rad_i = ParametersRad[2]    # Temperature in the radioactive envelope
-    L_rad_i = ParametersRad[3]    # Luminosity in the radioactive envelope
-    M_rad_i = ParametersRad[4]    # Mass in the radioactive envelope
-    n_rad_i = ParametersRad[5]    # List of n-parameters
+    ParametersConv = ParametersConvFun(Tc, RTot, LTot, ParametersRad_copy, control)
+
+    R_rad_i = ParametersRad_copy[0]    # Radius in the radioactive envelope
+    P_rad_i = ParametersRad_copy[1]    # Pressure in the radioactive envelope
+    T_rad_i = ParametersRad_copy[2]    # Temperature in the radioactive envelope
+    L_rad_i = ParametersRad_copy[3]    # Luminosity in the radioactive envelope
+    M_rad_i = ParametersRad_copy[4]    # Mass in the radioactive envelope
+    n_rad_i = ParametersRad_copy[5]    # List of n-parameters
 
     R_conv_i = ParametersConv[0]  # Radius in the convective core
     P_conv_i = ParametersConv[1]  # Pressure in the convective core
@@ -610,6 +613,9 @@ def minRelError(Tc, RTot, LTot, control):
     # Position of the frontier
     pos = len(n_rad_i)-1
 
+    if control:
+        print(pos)
+
     # We can calculate the values ​​of the physical parameters in the transition between the radiative and convective regions of the star
     # Interpolated values integrating from the surface to the center
     R_rad = interpolation(R_rad_i[pos], R_rad_i[pos-1], n_rad_i[-1], n_rad_i[-2])
@@ -619,12 +625,13 @@ def minRelError(Tc, RTot, LTot, control):
     M_rad = interpolation(M_rad_i[pos], M_rad_i[pos-1], n_rad_i[-1], n_rad_i[-2])
 
     # Interpolated values integrating from the center to the surface
-    R_con = interpolation(R_conv_i[layers-pos], R_conv_i[layers+1-pos], n_rad_i[-1], n_rad_i[-2])
-    P_con = interpolation(P_conv_i[layers-pos], P_conv_i[layers+1-pos], n_rad_i[-1], n_rad_i[-2])
-    T_con = interpolation(T_conv_i[layers-pos], T_conv_i[layers+1-pos], n_rad_i[-1], n_rad_i[-2])
-    L_con = interpolation(L_conv_i[layers-pos], L_conv_i[layers+1-pos], n_rad_i[-1], n_rad_i[-2])
-    M_con = interpolation(M_conv_i[layers-pos], M_conv_i[layers+1-pos], n_rad_i[-1], n_rad_i[-2])
+    R_con = interpolation(R_conv_i[-2], R_conv_i[-1], n_rad_i[-1], n_rad_i[-2])
+    P_con = interpolation(P_conv_i[-2], P_conv_i[-1], n_rad_i[-1], n_rad_i[-2])
+    T_con = interpolation(T_conv_i[-2], T_conv_i[-1], n_rad_i[-1], n_rad_i[-2])
+    L_con = interpolation(L_conv_i[-2], L_conv_i[-1], n_rad_i[-1], n_rad_i[-2])
+    M_con = interpolation(M_conv_i[-2], M_conv_i[-1], n_rad_i[-1], n_rad_i[-2])
 
     return TotalRelEror(P_rad, P_con, T_rad, T_con, L_rad, L_con, M_rad, M_con) # Total relative error in the frontier
+
 
 

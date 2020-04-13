@@ -64,8 +64,8 @@ for i in range(len(ax)):
 
     ax[i].set_title("\n" + names[i] + " - Radius", fontsize = 18, fontweight="semibold") # Title
     ax[i].plot(R_plot, plot_list[i], linewidth=2, color = colors[i], label = names[i] + "(r)")
-    ax[i].set_xlabel("Normalize Radius of each shell", fontsize = 13) # X labels
-    ax[i].set_ylabel("Normalize " + names[i], fontsize = 13)          # Y labels
+    ax[i].set_xlabel("Normalized Radius of each shell", fontsize = 13) # X labels
+    ax[i].set_ylabel("Normalized " + names[i], fontsize = 13)          # Y labels
 
     ax[i].set_xlim(-0.05,1.05) # X limits
     ax[i].set_ylim(-0.05,1.05) # Y limits
