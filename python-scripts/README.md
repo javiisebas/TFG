@@ -1,5 +1,5 @@
 
-Graphs:
+## Graphs:
 To obtain a compound graph with all the parameters depending on 
 the radius, run:
     Compound_Main.py
