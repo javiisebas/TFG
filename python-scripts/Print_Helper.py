@@ -1,4 +1,8 @@
 
+'''
+ This library helps to print the value of the parameters in each shell
+'''
+import pandas as pd # We import a pandas in case we want to save the data
 # We are going to define some function that will help us to print the values in a styles way
 
 def helpCreator(X, esp):
@@ -12,7 +16,7 @@ def helpCreator(X, esp):
     
 
 # Using the last function, we will create one that will redifine all the parameters of a shell
-def graphCreator(E_list, f_list, R_list, P_list, T_list, M_list, L_list, n_list):
+def graphCreator(E_list, f_list, R_list, P_list, T_list, M_list, L_list, n_list, save):
     '''
     Stylize all the parameters in one row, that is to say each shell
     Inputs: all the parameters of each shell
@@ -20,6 +24,22 @@ def graphCreator(E_list, f_list, R_list, P_list, T_list, M_list, L_list, n_list)
     '''
 
     global helpCreator
+
+    # In case we want to save the data in a csv file
+    if save:
+        # Dictionary that will be introduced in the DataFrame
+        Parameters_to_Save = {
+        'E_list' : E_list,
+        'f_list' : f_list,
+        'R_list' : R_list,
+        'P_list' : P_list,
+        'T_list' : T_list,
+        'L_list' : L_list,
+        'M_list' : M_list
+        }
+
+        df_Parameters = pd.DataFrame(Parameters_to_Save) # Creates the DataFrame
+        df_Parameters.to_csv('Parameters_Shells.csv')    # Saves the DataFrame on a csv format
 
     # We create the division between two shells
     line = '\n +'+ '-'*4 +'+'+ '-'*8 +'+'+ '-'*5 +'+'+ '-'*12 +'+'+ '-'*12 +'+'+ '-'*11 +'+'+ '-'*11 +'+'+ '-'*12 +'+'+ '-'*11 +'+'

@@ -5,7 +5,6 @@
 '''
 from numpy import linspace, argmin, full, zeros, where, arange, around
 from Model import * # We import all the algorithms of the model
-import pandas as pd # We import a pandas in case we want to save the data
 
 
 # We will use the parameters values of the minimal relative error, hence we will define a function to do it
@@ -171,7 +170,7 @@ L_plot = [L / max(L_list) for L in L_list]  # Normalized Luminosity
 M_plot = [M / max(M_list) for M in M_list]  # Normalized Mass
 
 
-# Dictionary of the parameters with its name, it will be used on the graphs
+# Dictionary of the parameters with its name, it will be used on the graphics
 Layers_Parameters = {
 'R_plot' : R_plot,
 'P_plot' : P_plot,
@@ -179,13 +178,3 @@ Layers_Parameters = {
 'L_plot' : L_plot,
 'M_plot' : M_plot
 }
-
-# In case we want to save the parameters values we can call this function that will create a csv
-def Save_Layers_Parameters_Fun(Layers_Parameters):
-    '''
-    Gets the dictionaty of parameters as inputs
-    '''
-
-    # We create the DataFrame and then we save it with the name 'Layers_Parameters.csv'
-    df_Parameters = pd.DataFrame(Layers_Parameters)
-    df_Parameters.to_csv('Layers_Parameters.csv')

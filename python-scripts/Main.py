@@ -1,17 +1,17 @@
 
 '''
- This library create a terminal interface to obtain the graphs and the value of the parameters on each shell
+ This library create a terminal interface to obtain the graphics and the value of the parameters on each shell
 '''
-from Graphs_Creator import * # We import all the functions that create the graphs
+from Graphics_Creator import * # We import all the functions that create the graphics
 from Print_Helper import * 
 
 
 
-def Print_Data():
+def Print_Data(save):
 	'''
 	The function uses the a funcion that stylice the data to print them
 	'''
-	graphCreator(E_list, f_list, R_list, P_list, T_list, M_list, L_list, n_list)
+	graphCreator(E_list, f_list, R_list, P_list, T_list, M_list, L_list, n_list, save)
 
 
 
@@ -32,6 +32,9 @@ def MainRun():
 		'6' : Plot_Luminosity_Gradient,
 		'7' : Print_Data
 	}
+
+	# We define whether or not we want to save the graphics
+	save_option = False
 
 	# We create an inforative message that the user will be able to read
 	messages = ['\nWelcome to the stellar interior evolution graph display interface.',
@@ -68,7 +71,7 @@ def MainRun():
 
 		# In case the user introduces a correct graph index
 		else:
-			possible_executions[user]()
+			possible_executions[user](save_option)
 
 
 # Finally we call the function in order to run the interface when this file gets executed
