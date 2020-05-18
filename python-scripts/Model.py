@@ -1,28 +1,77 @@
 
+'''
+ This library is compouse of the model algorithms to study the parameters in each layer of the star
+'''
 from Defined_Functions import * # We import all the functions that we have defined
 import warnings                 # As there some problems with the zero divide, we do not want to get any warning message
-from Print_Helper import *      # We import a function to make our printed values more styles
 from copy import copy
 
-warnings.filterwarnings("ignore")
+warnings.filterwarnings('ignore')
 
 
-# We define or initial parameters
-RTot_initial = 12  # Initial Radius
-LTot_initial = 40  # Initial Luminosity
-layers = 100       # We divide or star in 100 layers
+def ParametersRadEnvelopeFun(RTot, LTot):
+
+    '''
+     This function study the stellar parameters in the radioactive enve
+     -lope of the first 0.1% of the star.
+
+     It takes as inputs the total Radius, the total Luminosity.
+  
+     The model consist in an integrational methon from the surface to
+     the 0.9% of the star.
+
+     The outputs that we get are the values ​​of the physical parameters 
+     in the 0.1% radioactive envelope.
+    '''
+
+    # Lists that host the value or each parameter
+    R_rad_init_i = [] # Radius in the radioactive surface
+    P_rad_init_i = [] # Pressure in the radioactive surface
+    T_rad_init_i = [] # Temperature in the radioactive surface
+    M_rad_init_i = [] # Mass in the radioactive surface
+    L_rad_init_i = [] # Luminosity in the radioactive surface
+    E_rad_init_i = [] # Energy rate production in the radioactive surface
+    n_rad_init_i = [] # n-parameter in the radioactive surface
+    f_rad_init_i = [] # phase in the radioative surface
+
+    initial_layers = 10
+    h = -0.1 * RTot / initial_layers
+
+    #-----------------------------------PHASE 0-INICIO-----------------------------------
+    shell = 0
+    while shell < initial_layers:
+
+        r = RTot + shell*h        # Radius of each shell
+        Ti = T_rad_fun(r, RTot)   # Temperature of each shell
+        Pi = P_rad_fun(Ti, LTot)  # Pressure of each shell
+        Mi = MTot                 # Mass behind each shell
+        Li = LTot                 # Luminosity of each shell
+        Ei = Dom_epsilon(Ti)      # Energy rate production in each shell
+
+        # We add the parameters in the list
+        R_rad_init_i.append(r)
+        P_rad_init_i.append(Pi)
+        T_rad_init_i.append(Ti)
+        M_rad_init_i.append(Mi)
+        L_rad_init_i.append(Li)
+        E_rad_init_i.append(Ei)
+        n_rad_init_i.append(0)
+        f_rad_init_i.append('^^^^^^')
+
+        shell += 1 # As the loop is running, we have to increase the shell that we are studying
+    #-----------------------------------------------------------------------------------
+
+    return R_rad_init_i, P_rad_init_i, T_rad_init_i, L_rad_init_i, M_rad_init_i, E_rad_init_i, f_rad_init_i, n_rad_init_i
 
 
 
-def ParametersRadFun(RTot, LTot, control):
+def ParametersRadFun(RTot, LTot):
 
     '''
      This function study the stellar parameters in the radioactive enve
      -lope.
 
-     It takes as inputs the total Radius, the total Luminosity and the 
-     control parameter, that it will comunicate to the function whether 
-     or not we want to get the values of the parameters in each shell.
+     It takes as inputs the total Radius, the total Luminosity.
   
      The model consist in an integrational methon from the surface to
      the center of the star, going through different phases and conside-
@@ -32,7 +81,6 @@ def ParametersRadFun(RTot, LTot, control):
      in the radioactive envelope
     '''
 
-    global layers
 
     #---------------------------------------------RADIOACTIVE SURFACE---------------------------------------------
     # This is the code that generates the integrational method from the surface to the center of the star
@@ -53,34 +101,6 @@ def ParametersRadFun(RTot, LTot, control):
     E_rad_i = [] # Energy rate production in the radioactive surface
     n_rad_i = [] # n-parameter in the radioactive surface
     f_rad_i = [] # phase in the radioative surface
-
-    initial_layers = 10
-    h = -0.1 * RTot / initial_layers
-
-    #-----------------------------------PHASE 0-INICIO-----------------------------------
-    # We calculate or parameters starting from the total radius, just in case we want to print the parameters
-    if control:
-
-        # We wint some lines to make the printed parameters more styles
-        print("\nParameters in each shell \n")
-        print(4*" "+ "E" +4*" "+ "fase" +5*" " + "i" +9*" "+ "r" +12*" "+ "P" +11*" "+ "T" +11*" "+ "M" +12*" "+ "L" +10*" "+ "n+1")
-        print(" +"+ "-"*4 +"+"+ "-"*8 +"+"+ "-"*5 +"+"+ "-"*12 +"+"+ "-"*12 +"+"+ "-"*11 +"+"+ "-"*11 +"+"+ "-"*12 +"+"+ "-"*11 +"+")
-
-        shell = 0
-        while shell < initial_layers:
-
-            r = RTot + shell*h        # Radius of each shell
-            Ti = T_rad_fun(r, RTot)   # Temperature of each shell
-            Pi = P_rad_fun(Ti, LTot)  # Pressure of each shell
-            Mi = MTot                 # Mass behind each shell
-            Li = LTot                 # Luminosity of each shell
-            Ei = Dom_epsilon(Ti)      # Energy rate production in each shell
-
-            shell += 1 # As the loop is running, we have to increase the shell that we are studying
-  
-            # We want to print the values we will do it in a visual way
-            print(graphCreator(Ei, "^^^^^^", shell-11, r, Pi, Ti, Mi, Li, 0))
-    #-----------------------------------------------------------------------------------
 
     Rini = 0.9 * RTot    # Radius that we use to start the model
     h = - Rini / layers  # Integration step
@@ -111,7 +131,7 @@ def ParametersRadFun(RTot, LTot, control):
         L_rad_i.append(Li)
         E_rad_i.append(Ei)
         n_rad_i.append(0)
-        f_rad_i.append("INICIO")
+        f_rad_i.append('INICIO')
 
         shell += 1 # As the loop is running, we have to increase the shell that we are studying
     #-----------------------------------------------------------------------------------
@@ -183,7 +203,7 @@ def ParametersRadFun(RTot, LTot, control):
             L_rad_i.append(Li)
             E_rad_i.append(Ei)
             n_rad_i.append(0)
-            f_rad_i.append("A.1.1.")
+            f_rad_i.append('A.1.1.')
     #-----------------------------------------------------------------------------------
   
 
@@ -257,7 +277,7 @@ def ParametersRadFun(RTot, LTot, control):
             L_rad_i.append(Li)
             E_rad_i.append(Ei)
             n_rad_i.append(0)
-            f_rad_i.append("A.1.2.")
+            f_rad_i.append('A.1.2.')
     #-----------------------------------------------------------------------------------
   
 
@@ -335,7 +355,7 @@ def ParametersRadFun(RTot, LTot, control):
             L_rad_i.append(Li)
             E_rad_i.append(Ei)
             n_rad_i.append(n)
-            f_rad_i.append("A.1.3.")
+            f_rad_i.append('A.1.3.')
     #-----------------------------------------------------------------------------------
 
     # We have to calculate the value of K' as it will be constant in all the algorithm
@@ -402,25 +422,17 @@ def ParametersRadFun(RTot, LTot, control):
     #-----------------------------------------------------------------------------------
     #-------------------------------------------------------------------------------------------------------------
 
-    # At this point we have studied all the parameters from the surface to the center of the star
-    # If we want to get the values of the parameters, we will define control as True
-    pos = len(n_rad_i)-1 # Number of the last radioavtive shell
-    if control: 
-        # In case we want to print the values we will do it in a visual way
-        for i in range(pos): # Just the one that are inside the radioactive part
-            print(graphCreator(E_rad_i[i], f_rad_i[i], i, R_rad_i[i], P_rad_i[i], T_rad_i[i], M_rad_i[i], L_rad_i[i], n_rad_i[i]))
-
-    return R_rad_i, P_rad_i, T_rad_i, L_rad_i, M_rad_i, n_rad_i, K
+    return R_rad_i, P_rad_i, T_rad_i, L_rad_i, M_rad_i, E_rad_i, f_rad_i, n_rad_i, K
 
 
 
 # We apply the model for the initial parameters that we have defined at the beging of the script
 # We will use it to study the center temperature that miniaze the relative error, due to we will use the same values 
-ParametersRad = ParametersRadFun(RTot_initial, LTot_initial, False)
+ParametersRad_init = ParametersRadFun(RTot_initial, LTot_initial)
 
 
 
-def ParametersConvFun(Tc, RTot, LTot, ParametersRad, control):
+def ParametersConvFun(Tc, RTot, LTot, ParametersRad):
 
     ''' 
      This function study the stellar parameters in the convective core
@@ -438,14 +450,12 @@ def ParametersConvFun(Tc, RTot, LTot, ParametersRad, control):
      in the radioactive envelope
     '''
 
-    global layers
-
 
     R_rad_i = ParametersRad[0]  # Radius list in the radioactive part
-    n_rad_i = ParametersRad[5]  # List of n-parameters
-    K = ParametersRad[6]      # Polytrope model constant
+    n_rad_i = ParametersRad[-2]  # List of n-parameters
+    K = ParametersRad[-1]      # Polytrope model constant
 
-    # We can calculate the values ​​of the physical parameters in the transition between the radiative and convective regions of the star
+    # We can calculate the values ​​of the physical parameters in the transition between the two regions of the star
     # We will use them to study the relative error of all the model, with tha values obtained integrating from the center
     pos = len(n_rad_i)-1
     R_rad = interpolation(R_rad_i[pos], R_rad_i[pos-1], n_rad_i[-1], n_rad_i[-2])
@@ -468,6 +478,7 @@ def ParametersConvFun(Tc, RTot, LTot, ParametersRad, control):
     M_conv_i = [] # Mass in the convective core
     L_conv_i = [] # Luminosity in the convective core
     E_conv_i = [] # Energy rate production in the convective core
+    f_conv_i = [] # Phase in the convective core
 
     Rini = 0.9 * RTot  # Radius that we use to start the model
     h = Rini / layers  # Integration step
@@ -496,6 +507,7 @@ def ParametersConvFun(Tc, RTot, LTot, ParametersRad, control):
         M_conv_i.append(Mi)
         L_conv_i.append(Li)
         E_conv_i.append(Ei)
+        f_conv_i.append('CONVEC')
     
         shell += 1 # As the loop is running, we have to increase the shell that we are studying
     #-----------------------------------------------------------------------------------
@@ -556,24 +568,15 @@ def ParametersConvFun(Tc, RTot, LTot, ParametersRad, control):
         M_conv_i.append(Mi)
         L_conv_i.append(Li)
         E_conv_i.append(Ei)
+        f_conv_i.append('CONVEC')
     #-----------------------------------------------------------------------------------
     #-------------------------------------------------------------------------------------------------------------   
 
-    # At this point we have studied all the parameters from the center to the frontier of the star
-    # If we want to get the values of the parameters, we will define control as True
-    if control: 
-        # In case we want to print the values we will do it in a visual way
-        n = n_rad_i[-1] # We want to print the last calculated value of as it is the firt one of the convective part
-        for i in range(len(R_conv_i)-1):  # Just the one that are inside the convective part
-            print(graphCreator(E_conv_i[i], "CONVEC", pos+i, R_conv_i[-i-2], P_conv_i[-i-2], T_conv_i[-i-2]
-                        , M_conv_i[-i-2], L_conv_i[-i-2], n))
-            n = 0 # From this point n will be zero
-
-    return R_conv_i, P_conv_i, T_conv_i, L_conv_i, M_conv_i
+    return R_conv_i, P_conv_i, T_conv_i, L_conv_i, M_conv_i, E_conv_i, f_conv_i
 
 
 
-def minRelError(Tc, RTot, LTot, control):
+def minRelError(Tc, RTot, LTot):
 
     ''' 
      This function study the total relative error in the frontier
@@ -586,23 +589,23 @@ def minRelError(Tc, RTot, LTot, control):
      The outputs that we get is the total relative error
     '''
 
-    global ParametersRad, ParameterRadFun, ParametersConvFun
+    global ParametersRad_init, ParameterRadFun, ParametersConvFun
 
     # If the total radius or the total luminosity are different than the initial values we have to calculate the parameters again
     # as the ones that we have calculated right before this function, are with the initial values of radius and luminosity
-    ParametersRad_copy = copy(ParametersRad)
+    ParametersRad_copy = copy(ParametersRad_init)
     if RTot != RTot_initial or LTot != LTot_initial:
-        ParametersRad_copy = ParametersRadFun(RTot, LTot, control) # New frontier values
+        ParametersRad_copy = ParametersRadFun(RTot, LTot) # New frontier values
 
 
-    ParametersConv = ParametersConvFun(Tc, RTot, LTot, ParametersRad_copy, control)
+    ParametersConv = ParametersConvFun(Tc, RTot, LTot, ParametersRad_copy)
 
     R_rad_i = ParametersRad_copy[0]    # Radius in the radioactive envelope
     P_rad_i = ParametersRad_copy[1]    # Pressure in the radioactive envelope
     T_rad_i = ParametersRad_copy[2]    # Temperature in the radioactive envelope
     L_rad_i = ParametersRad_copy[3]    # Luminosity in the radioactive envelope
     M_rad_i = ParametersRad_copy[4]    # Mass in the radioactive envelope
-    n_rad_i = ParametersRad_copy[5]    # List of n-parameters
+    n_rad_i = ParametersRad_copy[-2]   # List of n-parameters
 
     R_conv_i = ParametersConv[0]  # Radius in the convective core
     P_conv_i = ParametersConv[1]  # Pressure in the convective core
@@ -613,10 +616,7 @@ def minRelError(Tc, RTot, LTot, control):
     # Position of the frontier
     pos = len(n_rad_i)-1
 
-    if control:
-        print(pos)
-
-    # We can calculate the values ​​of the physical parameters in the transition between the radiative and convective regions of the star
+    # We can calculate the values ​​of the physical parameters in the transition between the two regions of the star
     # Interpolated values integrating from the surface to the center
     R_rad = interpolation(R_rad_i[pos], R_rad_i[pos-1], n_rad_i[-1], n_rad_i[-2])
     P_rad = interpolation(P_rad_i[pos], P_rad_i[pos-1], n_rad_i[-1], n_rad_i[-2])
@@ -632,6 +632,3 @@ def minRelError(Tc, RTot, LTot, control):
     M_con = interpolation(M_conv_i[-2], M_conv_i[-1], n_rad_i[-1], n_rad_i[-2])
 
     return TotalRelEror(P_rad, P_con, T_rad, T_con, L_rad, L_con, M_rad, M_con) # Total relative error in the frontier
-
-
-

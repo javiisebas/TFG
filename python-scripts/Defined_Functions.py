@@ -1,4 +1,8 @@
 
+'''
+ This library is compouse of the main function that we will use on the Model study
+'''
+
 from Initial_Parameters import * # We import all the parameters that we have defined
 from numpy import sqrt           # We import the function square root to use it afterwards
 
@@ -101,11 +105,11 @@ def Dom_epsilon(T):
     epsilon = max(epsilonPP(T), epsilonCNO(T))
     
     if epsilon == 0: # If epsilon is zero
-        return "--"
+        return '--'
     elif epsilon == epsilonPP(T): # If the p-p chain leads
-        return "PP"
+        return 'PP'
     else: # If the CNO cycle leads
-        return "CN"
+        return 'CN'
 #--------------------------------------------------------------------------------------------------------
 
 
@@ -378,9 +382,3 @@ def TotalRelEror(P_rad, P_con, T_rad, T_con, L_rad, L_con, M_rad, M_con):
     c = ((L_rad - L_con) / L_rad) ** 2
     d = ((M_rad - M_con) / M_rad) ** 2
     return sqrt(a + b + c + d)	
-
-
-
-
-
-

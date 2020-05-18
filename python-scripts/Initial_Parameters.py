@@ -1,5 +1,9 @@
 
-# Units that we are going to adopt for the different magnitudes
+'''
+ This library is compouse of the units that we are going to adopt for the different magnitudes
+'''
+
+# Magnitudes
 
 r = 10**10  #cm (radius)
 P = 10**15  #din cm−2 (pressure)
@@ -19,4 +23,7 @@ Z = 1 - X - Y # Heavy elements fraction
  
 mu = 1 / (2*X + 0.75*Y + 0.5*Z) # mu - reduce mass
 
-MTot = 5      # Total radius
+MTot = 5                        # Total radius
+RTot_initial = 12               # Initial Radius
+LTot_initial = 40               # Initial Luminosity
+layers = 100                    # Number of layers in the star
